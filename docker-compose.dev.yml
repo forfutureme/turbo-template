@@ -1,0 +1,47 @@
+name: turbo_template_dev    # 设置容器组名称
+
+networks:  #创建网络
+  template_net:
+volumes: #创建挂载卷
+  reids_data:
+  postgresql_data:
+services:  # 定义服务组
+  database:
+    build:
+      context: ./packages/database
+      dockerfile: database.dev.dockerfile
+      network: host
+    networks:
+      - template_net
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16.2
+    restart: always
+    shm_size: 128mb # 设置共享内存最小值
+    ports:
+      - '5032:5432'
+    expose:
+      - 5432
+    environment:   # 设置环境变量
+      POSTGRES_USER: turbo
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: turbo_temp
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - 'postgresql_data:/var/lib/postgresql/data'   # 挂载数据到指定路径
+    networks:
+      - template_net
+    depends_on: # 设置依赖项
+      - redis  # 设置redis为依赖，只有redis启动成功后在启动
+  redis:  # redis容器
+    image: redis:7.2  # 镜像+tag
+    restart: always  # 同步重启
+    command: redis-server --save 60 1 --loglevel warning --appendonly yes  #设置redis-server
+    ports:
+      - '6079:6379'  # 指定端口
+    volumes:   # 设置挂在卷
+      - 'reids_data:/data'   # 将redis数据挂载到指定路径
+    networks: # 设置网络归属
+      - template_net
