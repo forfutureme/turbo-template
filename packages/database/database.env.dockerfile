@@ -19,4 +19,4 @@ RUN npm install
 
 # RUN npx prisma migrate dev
 
-CMD [ "npx", "prisma", "migrate", "dev" ]
+CMD [ "npx", "prisma", "migrate", "deloy" ]
