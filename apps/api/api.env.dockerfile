@@ -21,8 +21,9 @@ RUN npm run db:migrate:deploy
 # 先对依赖进行翦除
 FROM base AS builder
 WORKDIR /app
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
 RUN npm install -g pnpm
-RUN pnpm setup
 RUN pnpm add turbo -g
 COPY . .
 RUN turbo prune api --docker
@@ -30,6 +31,8 @@ RUN turbo prune api --docker
 # 建立子工作区
 FROM base AS installer
 WORKDIR /app
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
 RUN npm install -g pnpm
 # 安装裁剪后的依赖
 COPY .gitignore .gitignore
