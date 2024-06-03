@@ -1,6 +1,6 @@
 'use server';
 
-// import type { User } from '@repo/database/client';
+import type { User } from '@repo/database/client';
 import prisma from '@repo/database/client';
 /**
  * 查询用户列表
@@ -32,17 +32,9 @@ export async function searchUsers(): Promise<
  * @param id - 字符串
  * @returns - `User`｜`{}` | null
  */
-export async function searchUserInfo(id: string): Promise<
-  | {
-      id: string;
-      name: string;
-      email: string | null;
-      createAt: Date;
-      updateAt: Date;
-    }
-  | object
-  | null
-> {
+export async function searchUserInfo(
+  id: string,
+): Promise<User | object | null> {
   if (!id) return {};
   try {
     const res = await prisma.user.findFirst({ where: { id } });
