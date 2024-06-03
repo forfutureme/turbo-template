@@ -8,7 +8,7 @@ COPY ./package/database/prisma  /app/prisma
 COPY ./package/database/src /app/src
 COPY ./package/database/package.docker.json /app/package.json
 
-RUN npm install
+RUN npm install --registry https://registry.npmmirror.com any-touch
 
 # 设置环境变量
 ARG DATABASE_URL
@@ -23,8 +23,8 @@ FROM base AS builder
 WORKDIR /app
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
-RUN npm install -g pnpm
-RUN pnpm add turbo -g
+RUN npm install -g pnpm --registry https://registry.npmmirror.com  any-touch
+RUN pnpm add turbo -g --registry https://registry.npmmirror.com any-touch
 COPY . .
 RUN turbo prune api --docker
 
@@ -33,12 +33,12 @@ FROM base AS installer
 WORKDIR /app
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
-RUN npm install -g pnpm
+RUN npm install -g pnpm --registry https://registry.npmmirror.com any-touch
 # 安装裁剪后的依赖
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN pnpm install
+RUN pnpm install --registry https://registry.npmmirror.com any-touch
 
 # 基于依赖构建项目
 COPY --from=builder /app/out/full .
