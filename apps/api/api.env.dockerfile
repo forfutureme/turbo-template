@@ -48,6 +48,8 @@ COPY turbo.json turbo.json
 ARG DATABASE_URL
 ENV DATABASE_URL=postgresql://turbo:123456@localhost:5032/turbo_temp?schema=env&connect_timeout=300
 
+# 禁用next.js在构建时收集数据
+ENV NEXT_TELEMETRY_DISABLED 1
 
 # 处理数据库
 # 初始化prisma
@@ -74,5 +76,9 @@ COPY --from=installer /app/apps/api/package.json .
 COPY --from=installer --chown=nextjs:nodejs /app/apps/api/.next/standalone ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/api/.next/static ./apps/api/.next/static
 COPY --from=installer --chown=nextjs:nodejs /app/apps/api/public ./apps/api/public
+
+# 设置环境变量
+ARG DATABASE_URL
+ENV DATABASE_URL=postgresql://turbo:123456@localhost:5032/turbo_temp?schema=env&connect_timeout=300
 
 CMD node apps/api/server.js
