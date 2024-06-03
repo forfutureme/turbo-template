@@ -38,7 +38,7 @@ RUN npm install -g pnpm --registry https://registry.npmmirror.com any-touch
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN pnpm install --registry https://registry.npmmirror.com any-touch
+RUN pnpm install --registry https://registry.npmmirror.com any-touch -w
 
 # 基于依赖构建项目
 COPY --from=builder /app/out/full .
