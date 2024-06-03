@@ -22,7 +22,7 @@ RUN npm run db:migrate:deploy
 FROM base AS builder
 WORKDIR /app
 RUN npm install -g pnpm
-RUN pnpm global add turbo
+RUN pnpm add turbo -g
 COPY . .
 RUN turbo prune api --docker
 
