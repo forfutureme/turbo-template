@@ -32,7 +32,7 @@ WORKDIR /app
 # 安装裁剪后的依赖
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/yarn.lock ./yarn.lock
+COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 RUN yarn install
 
 # 基于依赖构建项目
