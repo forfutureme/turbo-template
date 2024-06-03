@@ -21,7 +21,7 @@ RUN npm run db:migrate:deploy
 # 先对依赖进行翦除
 FROM base AS builder
 WORKDIR /app
-RUN yarn global add turbo
+RUN pnpm global add turbo
 COPY . .
 RUN turbo prune api --docker
 
@@ -33,7 +33,7 @@ WORKDIR /app
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN yarn install
+RUN pnpm install
 
 # 基于依赖构建项目
 COPY --from=builder /app/out/full .
@@ -44,7 +44,7 @@ ARG DATABASE_URL
 ENV DATABASE_URL=postgresql://turbo:123456@localhost:5032/turbo_temp?schema=env&connect_timeout=300
 
 # 开始构建
-RUN yarn turbo build --filter=api...
+RUN pnpm turbo build --filter=api...
 
 # 创建服务
 FROM base AS runner
