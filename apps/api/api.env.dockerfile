@@ -79,7 +79,7 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/api/public ./apps/api/publ
 
 # 设置环境变量
 ARG DATABASE_URL
-ENV DATABASE_URL=postgresql://turbo:123456@postgres:5032/turbo_temp?schema=env&connect_timeout=300
+ENV DATABASE_URL=postgresql://turbo:123456@postgres:5432/turbo_temp?schema=env&connect_timeout=300
 
 CMD node apps/api/server.js
 
