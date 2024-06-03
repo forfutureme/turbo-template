@@ -17,6 +17,11 @@ COPY package.docker.json /app/package.json
 #   fi
 RUN npm install
 
+# 设置环境变量
+ARG DATABASE_URL
+ENV DATABASE_URL=postgresql://turbo:123456@localhost:5032/turbo_temp?schema=env&connect_timeout=300
+
+
 # RUN npx prisma migrate dev
 
-CMD [ "npx", "prisma", "migrate", "deloy" ]
+CMD [ "npx", "prisma", "migrate", "deploy" ]
