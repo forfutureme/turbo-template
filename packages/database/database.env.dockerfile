@@ -5,7 +5,8 @@ WORKDIR /app
 COPY prisma /app/prisma
 COPY src /app/src
 COPY package.docker.json /app/package.json
-COPY .env /app/.env
+
+
 
 # RUN \
 #   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
