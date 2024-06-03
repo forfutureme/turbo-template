@@ -51,13 +51,13 @@ ENV DATABASE_URL=postgresql://turbo:123456@localhost:5032/turbo_temp?schema=env&
 
 # 处理数据库
 # 初始化prisma
-RUN turbo db:generate
+RUN turbo run db:generate
 
 # 开始构建
 RUN pnpm turbo build --filter=api...
 
 #更新数据库
-RUN turbo db:migrate:deploy
+RUN turbo run db:migrate:deploy
 
 # 创建服务
 FROM base AS runner
