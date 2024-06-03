@@ -1,20 +1,20 @@
 FROM node:20 AS base
 
 # 先同步数据库
-FROM base AS db
-WORKDIR /app
+# FROM base AS db
+# WORKDIR /app
 
-COPY ./package/database/prisma  /app/prisma
-COPY ./package/database/src /app/src
-COPY ./package/database/package.docker.json /app/package.json
+# COPY ./package/database/prisma  /app/prisma
+# COPY ./package/database/src /app/src
+# COPY ./package/database/package.docker.json /app/package.json
 
-RUN npm install --registry https://registry.npmmirror.com any-touch
+# RUN npm install --registry https://registry.npmmirror.com any-touch
 
-# 设置环境变量
-ARG DATABASE_URL
-ENV DATABASE_URL=postgresql://turbo:123456@localhost:5032/turbo_temp?schema=env&connect_timeout=300
-# RUN npx prisma migrate dev
-RUN npm run db:migrate:deploy
+# # 设置环境变量
+# ARG DATABASE_URL
+# ENV DATABASE_URL=postgresql://turbo:123456@localhost:5032/turbo_temp?schema=env&connect_timeout=300
+# # RUN npx prisma migrate dev
+# RUN npm run db:migrate:deploy
 # 更新数据的话，这里执行
 
 # 开始构建
@@ -48,8 +48,16 @@ COPY turbo.json turbo.json
 ARG DATABASE_URL
 ENV DATABASE_URL=postgresql://turbo:123456@localhost:5032/turbo_temp?schema=env&connect_timeout=300
 
+
+# 处理数据库
+# 初始化prisma
+RUN turbo db:generate
+
 # 开始构建
 RUN pnpm turbo build --filter=api...
+
+#更新数据库
+RUN turbo db:migrate:deploy
 
 # 创建服务
 FROM base AS runner
