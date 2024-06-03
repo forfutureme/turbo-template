@@ -1,6 +1,6 @@
 FROM node:20
 
-WORKDIR /app 
+WORKDIR /app
 
 COPY prisma /app/prisma
 COPY src /app/src
@@ -23,5 +23,6 @@ ENV DATABASE_URL=postgresql://turbo:123456@localhost:5032/turbo_temp?schema=env&
 
 
 # RUN npx prisma migrate dev
+RUN npm run db:migrate:deploy
 
-CMD [ "npx", "prisma", "migrate", "deploy" ]
+CMD [ "echo", "ok!!!"]
