@@ -1,81 +1,82 @@
-# Turborepo starter
+# 项目简介
+> 这是综合性项目模版：
+> * 基于`turbo`管理`monorepo`项目，
+> * 使用`nextjs`作为全栈应用框架，
+> * 使用`tailwindcss`做为样式库，
+> * 使用`postgresSql`做为持久数据库，
+> * 使用`redis`做为快速读写的内存数据库
+> * 使用`prisma`做为数据库的ORM工具
+> * 使用`typescript`做为`javascript`的类型超集
+> * 使用`docker`做为容器部署工具
 
-This is an official starter Turborepo.
+## 模版内置的公共能力(packages)
+* `eslint-cofonfig` - `eslint`公共配置
+* `typescript-config` - `typescript`公共配置
+* `prettier-config` - `prettier`公共配置
+* `tailwind-config` - `tailwind`公共配置
+* `database` - `prisma`工具初始化并对外输出
+* `ui` - 公共UI组件库
 
-## Using this example
+## 模版内演示应用
+* `api` - 一个只提功能接口服务的应用
+* `backend` - 管理端应用
+* `frontend` - 用户端应用
 
-Run the following command:
 
+## 启动本地开发
+
+### 包管理器准备，依赖安装
+* 推荐使用`pnpm`可以配合`--filter=xxx`方便针对性安装依赖
 ```sh
-npx create-turbo@latest
+npm i pnpm -g
+```
+* 安装`turbo`
+```sh
+pnpm add turbo -g
+```
+* 安装依赖
+```sh
+pnpm i -w
 ```
 
-## What's inside?
+### 数据库准备
+* 确保数据库在本地已准备好
+  * 本地启动`redis`  (可选，目前演示功能未使用)
+  * 本地启动`postgersSql`
 
-This Turborepo includes the following packages/apps:
+* 修改`packages/database/.env`文件里，数据库连接时使用的必要信息
 
-### Apps and Packages
+#### 启动本地环境
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
+* 启动全部应用
+```sh
+turbo run dev
 ```
-cd my-turborepo
-pnpm build
+* 启动单个应用
+```sh
+turbo run dev --filter=xxx
 ```
 
-### Develop
 
-To develop all apps and packages, run the following command:
+## 容器化部署
+> 建议在服务器环境进行
 
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
+### 构建镜像
+```sh
+docker compose -f ./docker-compose.env.yml build
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
+### 容器部署
+```sh
+docker compose -f ./docker-compose.env.yml up -d
 ```
 
-## Useful Links
+### 查看部署状态
+```sh
+docker ps
+```
 
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+### 查看目标应用日志
+```sh
+docker logs 容器名｜容器id
+```
