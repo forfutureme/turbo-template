@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /**
  * Author: huweijian
  * Date: 2024-05-24 12:06:27

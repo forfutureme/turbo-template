@@ -9,7 +9,7 @@ ENV PATH="${PATH}:${PNPM_HOME}"
 RUN npm install -g pnpm --registry https://registry.npmmirror.com  any-touch
 RUN pnpm add turbo -g --registry https://registry.npmmirror.com any-touch
 COPY . .
-RUN turbo prune api --docker
+RUN turbo prune frontend --docker
 
 # 建立子工作区
 FROM base AS installer
@@ -40,7 +40,7 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN pnpm turbo db:generate
 
 # 开始构建
-RUN pnpm turbo build --filter=api...
+RUN pnpm turbo build --filter=frontend...
 
 #更新数据库
 RUN pnpm turbo db:migrate:deploy
@@ -54,16 +54,16 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 USER nextjs
 
-COPY --from=installer /app/apps/api/next.config.js .
-COPY --from=installer /app/apps/api/package.json .
+COPY --from=installer /app/apps/frontend/next.config.js .
+COPY --from=installer /app/apps/frontend/package.json .
 
-COPY --from=installer --chown=nextjs:nodejs /app/apps/api/.next/standalone ./
-COPY --from=installer --chown=nextjs:nodejs /app/apps/api/.next/static ./apps/api/.next/static
-COPY --from=installer --chown=nextjs:nodejs /app/apps/api/public ./apps/api/public
+COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/.next/standalone ./
+COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/.next/static ./apps/frontend/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/public ./apps/frontend/public
 
 # 设置环境变量
 ARG DATABASE_URL
 # 此时在容器内部启动服务 连接数据库时需要使用 数据库容器名+容器内数据库服务端口号
 ENV DATABASE_URL=postgresql://turbo:123456@postgres:5432/turbo_temp?schema=env&connect_timeout=300
 
-CMD node apps/api/server.js
+CMD node apps/frontend/server.js
