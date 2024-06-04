@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.1.1",
+    "@prisma/nextjs-monorepo-workaround-plugin": "^5.14.0",
     "@repo/database": "workspace:*",
     "@repo/eslint-config": "workspace:*",
     "@repo/prettier-config": "workspace:*",

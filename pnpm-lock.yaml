@@ -94,6 +94,9 @@ importers:
       '@next/eslint-plugin-next':
         specifier: ^14.1.1
         version: 14.1.1
+      '@prisma/nextjs-monorepo-workaround-plugin':
+        specifier: ^5.14.0
+        version: 5.14.0
       '@repo/database':
         specifier: workspace:*
         version: link:../../packages/database
@@ -158,6 +161,9 @@ importers:
       '@next/eslint-plugin-next':
         specifier: ^14.1.1
         version: 14.1.1
+      '@prisma/nextjs-monorepo-workaround-plugin':
+        specifier: ^5.14.0
+        version: 5.14.0
       '@repo/database':
         specifier: workspace:*
         version: link:../../packages/database
