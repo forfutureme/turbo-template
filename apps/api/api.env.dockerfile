@@ -70,4 +70,4 @@ ARG DATABASE_URL
 # 此时在容器内部启动服务 连接数据库时需要使用 数据库容器名+容器内数据库服务端口号
 ENV DATABASE_URL=postgresql://turbo:123456@postgres:5432/turbo_temp?schema=env&connect_timeout=300
 
-CMD node apps/${appname}/server.js
+CMD node apps/api/server.js
