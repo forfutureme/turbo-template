@@ -12,12 +12,15 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "dependsOn": ["db:generate", "db:migrate:dev"]
+      "dependsOn": ["db:generate", "db:migrate:dev:init"]
     },
     "db:generate": {
       "cache": false
     },
-    "db:migrate:dev": {
+    "db:migrate:dev:init": {
+      "cache": false
+    },
+    "db:migrate:dev:update": {
       "cache": false
     },
     "db:migrate:deploy": {

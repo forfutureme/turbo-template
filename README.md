@@ -55,7 +55,7 @@ turbo run dev
 * 启动单个应用
 ```sh
 turbo run db:generate
-turbo run db:migrate:dev
+turbo run db:migrate:dev:init
 turbo run dev --filter=xxx
 ```
 

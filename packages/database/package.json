@@ -8,7 +8,8 @@
   "scripts": {
     "db:generate": "prisma generate",
     "db:migrate:deploy": "prisma migrate deploy",
-    "db:migrate:dev": "prisma migrate dev",
+    "db:migrate:dev:init": "prisma migrate dev --name init",
+    "db:migrate:dev:update": "prisma migrate dev --name update",
     "db:push": "prisma db push",
     "db:seed": "tsx src/seed.ts",
     "dev": "tsup src/* --watch",
